@@ -1,0 +1,24 @@
+.gradientbackground {
+  background: 
+  /* for top left gradient effect */ linear-gradient(
+      135deg,
+      #45a5f4 0%,
+      transparent 50%
+    ),
+    /* for top right gradient effect */
+      linear-gradient(-135deg, #45a5f4 0%, transparent 60%),
+    /* for horizontal gradient effect */
+      linear-gradient(
+        to bottom,
+        rgba(225, 190, 231, 1) 0%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 1) 100%
+      );
+
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 50% 100%, 50% 100%, 100% 100%;
+  background-position: top left, top right, center;
+  background-blend-mode: overlay;
+  width: 100dvw;
+  height: 100dvh;
+}

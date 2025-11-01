@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-brand-font: "Doto", sans-serif;
+  --color-muted-foreground: hsl(0 0% 45.1%);
+
+  @keyframes customBounce {
+    0% {
+      transform: translateX(0px);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    50% {
+      transform: translateX(8px);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    100% {
+      transform: translateX(0px);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+  --animate-custom-bounce: customBounce 1.5s infinite;
+}
