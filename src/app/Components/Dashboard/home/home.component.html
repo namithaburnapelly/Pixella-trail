@@ -1,1 +1,44 @@
-<p>home works!</p>
+<main class="h-dvh w-full">
+  <!-- desktop view -->
+  <div class="hidden md:flex h-full w-full">
+    <app-sidebar></app-sidebar>
+    <!-- border -->
+    <div class="h-full flex-1">
+      <div class="h-1 w-full">
+        <app-gradient-border class="h-full w-full"></app-gradient-border>
+      </div>
+      <app-topbar></app-topbar>
+      <!-- border -->
+      <div class="h-[0.5px] w-full">
+        <app-gradient-border class="h-full w-full"></app-gradient-border>
+      </div>
+      <app-chatpanel></app-chatpanel>
+    </div>
+  </div>
+
+  <!-- mobile view -->
+  <div class="md:hidden">
+    <!-- border -->
+    <div class="h-1 w-full">
+      <app-gradient-border class="h-full w-full"></app-gradient-border>
+    </div>
+    <div class="h-16 w-full flex items-center justify-between">
+      <app-sidebar class="pl-4"></app-sidebar>
+      <div class="flex items-center text-purple-700">
+        <app-chatbot-icon class="h-14 w-14"></app-chatbot-icon>
+        <app-brand-name class="text-blue-900"></app-brand-name>
+      </div>
+      <div class="pr-4">
+        <lucide-icon
+          name="square-pen"
+          title="New chat"
+          class="text-blue-900"
+        ></lucide-icon>
+      </div>
+    </div>
+    <!-- border -->
+    <div class="h-[0.5px] w-full">
+      <app-gradient-border class="h-full w-full"></app-gradient-border>
+    </div>
+  </div>
+</main>

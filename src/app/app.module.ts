@@ -18,6 +18,10 @@ import { RequiredFieldAlertDivComponent } from './Components/Shared/required-fie
 import { BrandNameComponent } from './Components/Shared/brand-name/brand-name.component';
 import { GradientBorderComponent } from './Components/Shared/gradient-border/gradient-border.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TopbarComponent } from './Components/Dashboard/topbar/topbar.component';
+import { SidebarComponent } from './Components/Dashboard/sidebar/sidebar.component';
+import { ChatpanelComponent } from './Components/Dashboard/home/chatpanel/chatpanel.component';
+import { ChatbotIconComponent } from './Components/Shared/chatbot-icon/chatbot-icon.component';
 // import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -30,6 +34,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RequiredFieldAlertDivComponent,
     BrandNameComponent,
     GradientBorderComponent,
+    TopbarComponent,
+    SidebarComponent,
+    ChatpanelComponent,
+    ChatbotIconComponent,
   ],
   imports: [
     BrowserModule,

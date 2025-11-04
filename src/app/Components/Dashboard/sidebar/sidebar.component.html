@@ -1,0 +1,82 @@
+<!-- desktop view -->
+<aside
+  class="hidden h-full py-3 md:block px-4 bg-linear-to-b from-purple-200 to-indigo-200 transition-all duration-300"
+  [ngClass]="{
+    'w-80': isSidebarVisible,
+    'w-20': !isSidebarVisible
+  }"
+>
+  <div class="flex w-full justify-between">
+    <div class="flex w-full py-2 justify-between px-1.5">
+      @if (isSidebarVisible) {
+      <app-brand-name
+        *ngIf="isSidebarVisible"
+        class="flex items-center text-blue-900"
+      ></app-brand-name>
+
+      <button
+        class="group cursor-pointer flex items-center w-fit p-1 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon
+          name="chevron-left"
+          title="Sidebar"
+          class="text-blue-900 opacity-80 group-hover:opacity-90"
+        ></lucide-icon>
+      </button>
+      } @else {
+      <button
+        class="cursor-pointer flex items-center w-fit p-[5px] rounded transition-colors ease-in duration-150 hover:bg-purple-300"
+        (click)="toggleSidebar()"
+      >
+        <lucide-icon
+          name="text-align-justify"
+          title="Sidebar"
+          class="text-blue-900"
+        ></lucide-icon>
+      </button>
+      }
+    </div>
+  </div>
+  <!-- sidebar content -->
+  @if(isSidebarVisible){ sidebar }
+</aside>
+
+<!-- mobile view sidebar -->
+<!-- toggle button -->
+<div class="relative md:hidden">
+  <button (click)="toggleSidebar()">
+    <lucide-icon
+      name="text-align-justify"
+      title="Sidebar"
+      class="text-blue-900 cursor-pointer"
+    ></lucide-icon>
+  </button>
+</div>
+<aside
+  class="md:hidden px-4 py-3 fixed inset-0 w-dvw bg-linear-to-b from-purple-200 to-indigo-200 transition-all duration-400"
+  [ngClass]="{
+    'translate-x-0 pointer-events-auto': isSidebarVisible,
+    '-translate-x-full opacity-0 pointer-events-none': !isSidebarVisible
+  }"
+>
+  <div class="flex w-full py-2 justify-between px-1.5">
+    <app-brand-name
+      *ngIf="isSidebarVisible"
+      class="flex items-center text-blue-900"
+    ></app-brand-name>
+
+    <button
+      class="group cursor-pointer flex items-center w-fit py-0.5 px-2 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
+      (click)="toggleSidebar()"
+    >
+      <lucide-icon
+        name="chevron-left"
+        title="Sidebar"
+        class="text-blue-900 opacity-80 group-hover:opacity-90"
+      ></lucide-icon>
+    </button>
+  </div>
+  <!-- sidebar content--->
+  sidebar
+</aside>

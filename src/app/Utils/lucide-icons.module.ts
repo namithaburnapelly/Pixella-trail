@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-  AlignJustify,
+  TextAlignJustify,
   ArrowRight,
   Ellipsis,
   EllipsisVertical,
@@ -17,6 +17,7 @@ import {
   EyeClosed,
   Eye,
   ArrowUp,
+  ChevronLeft,
 } from 'lucide-angular';
 
 @NgModule({
@@ -25,7 +26,7 @@ import {
     LucideAngularModule.pick({
       Search,
       SquarePen,
-      AlignJustify,
+      TextAlignJustify,
       EllipsisVertical,
       Sun,
       Moon,
@@ -39,6 +40,7 @@ import {
       EyeClosed,
       Eye,
       ArrowUp,
+      ChevronLeft,
     }),
   ],
   exports: [LucideAngularModule],
