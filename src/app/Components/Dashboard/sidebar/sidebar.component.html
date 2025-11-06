@@ -1,6 +1,83 @@
+<!-- Shared template for header -->
+<ng-template #sidebarHeader>
+  <app-brand-name
+    *ngIf="isSidebarVisible"
+    class="flex items-center text-blue-900"
+  ></app-brand-name>
+
+  <button
+    class="group cursor-pointer flex items-center w-fit py-0.5 px-2 md:p-1 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
+    (click)="toggleSidebar()"
+  >
+    <lucide-icon
+      name="chevron-left"
+      title="Sidebar"
+      class="text-blue-900 opacity-80 group-hover:opacity-90"
+    ></lucide-icon>
+  </button>
+</ng-template>
+
+<!-- shared template for content -->
+<ng-template #sidebarContent>
+  <div class="w-full pt-4 flex flex-col gap-y-5">
+    <div>
+      <!-- New chat -->
+      <button
+        class="group w-full flex items-center justify-between gap-0.5 cursor-pointer p-[5px] rounded transition-colors ease-in duration-150 hover:bg-purple-300"
+      >
+        <div class="flex items-center gap-1.5 max-w-[90%]">
+          <lucide-icon
+            name="square-pen"
+            title="New chat"
+            class="text-blue-900"
+            size="18px"
+          ></lucide-icon>
+          <p class="truncate">New chat</p>
+        </div>
+        <div
+          class="hidden group-hover:block transition-all ease-in duration-100"
+        >
+          <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + Shift + O</p>
+        </div>
+      </button>
+      <!-- serach chats -->
+
+      <button
+        class="group w-full flex items-center justify-between gap-0.5 cursor-pointer p-[5px] rounded transition-colors ease-in duration-150 hover:bg-purple-300"
+      >
+        <div class="flex items-center gap-1.5 max-w-[90%]">
+          <lucide-icon
+            name="search"
+            title="Search chats"
+            class="text-blue-900"
+            size="18px"
+          ></lucide-icon>
+          <p class="truncate">Search chats</p>
+        </div>
+        <div
+          class="hidden group-hover:block transition-all ease-in duration-100"
+        >
+          <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + K</p>
+        </div>
+      </button>
+    </div>
+    <div class="px-[5px]">
+      <p class="pb-1.5 text-blue-900 font-medium select-none opacity-75">
+        Chats
+      </p>
+      <ng-container>
+        @if(chatTitles | async; as titles ){ @if (titles.loading) { loading... }
+        @if (titles.result) { @for(chat of titles.result; track chat.id){
+        {{ chat.title }}
+        } } }
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
 <!-- desktop view -->
 <aside
-  class="hidden h-full py-3 md:block px-4 bg-linear-to-b from-purple-200 to-indigo-200 transition-all duration-300"
+  class="hidden h-full py-3 md:block px-4 bg-linear-to-b from-purple-200 to-indigo-200 transition-all ease-in-out duration-500"
   [ngClass]="{
     'w-80': isSidebarVisible,
     'w-20': !isSidebarVisible
@@ -9,21 +86,7 @@
   <div class="flex w-full justify-between">
     <div class="flex w-full py-2 justify-between px-1.5">
       @if (isSidebarVisible) {
-      <app-brand-name
-        *ngIf="isSidebarVisible"
-        class="flex items-center text-blue-900"
-      ></app-brand-name>
-
-      <button
-        class="group cursor-pointer flex items-center w-fit p-1 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
-        (click)="toggleSidebar()"
-      >
-        <lucide-icon
-          name="chevron-left"
-          title="Sidebar"
-          class="text-blue-900 opacity-80 group-hover:opacity-90"
-        ></lucide-icon>
-      </button>
+      <ng-container *ngTemplateOutlet="sidebarHeader"></ng-container>
       } @else {
       <button
         class="cursor-pointer flex items-center w-fit p-[5px] rounded transition-colors ease-in duration-150 hover:bg-purple-300"
@@ -39,12 +102,14 @@
     </div>
   </div>
   <!-- sidebar content -->
-  @if(isSidebarVisible){ sidebar }
+  @if(isSidebarVisible){
+  <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
+  }
 </aside>
 
 <!-- mobile view sidebar -->
 <!-- toggle button -->
-<div class="relative md:hidden">
+<div class="realtive md:hidden">
   <button (click)="toggleSidebar()">
     <lucide-icon
       name="text-align-justify"
@@ -54,29 +119,15 @@
   </button>
 </div>
 <aside
-  class="md:hidden px-4 py-3 fixed inset-0 w-dvw bg-linear-to-b from-purple-200 to-indigo-200 transition-all duration-400"
+  class="md:hidden fixed top-0 left-0 w-dvw h-full px-4 py-3 bg-linear-to-b from-purple-200 to-indigo-200 transition-transform duration-400"
   [ngClass]="{
-    'translate-x-0 pointer-events-auto': isSidebarVisible,
-    '-translate-x-full opacity-0 pointer-events-none': !isSidebarVisible
+    'translate-x-0': isSidebarVisible,
+    '-translate-x-full': !isSidebarVisible
   }"
 >
   <div class="flex w-full py-2 justify-between px-1.5">
-    <app-brand-name
-      *ngIf="isSidebarVisible"
-      class="flex items-center text-blue-900"
-    ></app-brand-name>
-
-    <button
-      class="group cursor-pointer flex items-center w-fit py-0.5 px-2 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
-      (click)="toggleSidebar()"
-    >
-      <lucide-icon
-        name="chevron-left"
-        title="Sidebar"
-        class="text-blue-900 opacity-80 group-hover:opacity-90"
-      ></lucide-icon>
-    </button>
+    <ng-container *ngTemplateOutlet="sidebarHeader"></ng-container>
   </div>
-  <!-- sidebar content--->
-  sidebar
+  <!-- sidebar content -->
+  <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
 </aside>

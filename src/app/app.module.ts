@@ -22,6 +22,8 @@ import { TopbarComponent } from './Components/Dashboard/topbar/topbar.component'
 import { SidebarComponent } from './Components/Dashboard/sidebar/sidebar.component';
 import { ChatpanelComponent } from './Components/Dashboard/home/chatpanel/chatpanel.component';
 import { ChatbotIconComponent } from './Components/Shared/chatbot-icon/chatbot-icon.component';
+import { MessageService } from './Services/Messages/message.service';
+import { NgxSonnerToaster } from 'ngx-sonner';
 // import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -46,6 +48,7 @@ import { ChatbotIconComponent } from './Components/Shared/chatbot-icon/chatbot-i
     JwtModule.forRoot(JWT_Module_Options),
     LucideIconsModule,
     BrowserAnimationsModule,
+    NgxSonnerToaster,
     // MarkdownModule.forRoot({
     //   sanitize: SecurityContext.NONE,
     // }),
@@ -53,6 +56,7 @@ import { ChatbotIconComponent } from './Components/Shared/chatbot-icon/chatbot-i
   providers: [
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     AuthService,
+    MessageService,
     provideHttpClient(),
   ],
   bootstrap: [AppComponent],

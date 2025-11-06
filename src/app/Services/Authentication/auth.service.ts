@@ -22,7 +22,7 @@ export class AuthService {
 
   constructor() {
     //get local storage when service intializes for persistent state
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       const user: CurrentUser = JSON.parse(storedUser);
       if (this.isTokenExpired(user.accessToken)) {
@@ -44,7 +44,7 @@ export class AuthService {
             accessToken: response.token,
           };
           console.log(user, 'user created');
-          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
           return user;
         }),
@@ -55,6 +55,7 @@ export class AuthService {
       );
   }
 
+  // error handling
   signup(
     username: string,
     email: string,
@@ -69,7 +70,7 @@ export class AuthService {
 
   logout(): void {
     this.currentUserSubject.next(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('currentUser');
   }
 
   isTokenExpired(token: string | null): boolean {

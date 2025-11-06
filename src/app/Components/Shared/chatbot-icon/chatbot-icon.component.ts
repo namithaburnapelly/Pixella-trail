@@ -29,7 +29,7 @@ import { Component } from '@angular/core';
         #imgRef
         [src]="imageUrl"
         (load)="imageLoaded = true"
-        class="w-full h-full select-none"
+        class="w-14 h-14 select-none"
         [class.opacity-0]="!imageLoaded"
         [class.opacity-100]="imageLoaded"
       />

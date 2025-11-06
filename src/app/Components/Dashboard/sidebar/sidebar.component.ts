@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  Injector,
+  OnInit,
+} from '@angular/core';
+import { MessageService } from '../../../Services/Messages/message.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,10 +13,30 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   isSidebarVisible: boolean = false;
+  Array = Array;
+  private chatService = inject(MessageService);
+  private injector = inject(Injector);
 
-  toggleSidebar() {
+  chatTitles = this.chatService.chatTitles$;
+
+  ngOnInit(): void {
+    this.updateSidebarVisibility();
+    this.chatService.refreshChatTitles();
+  }
+
+  toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
+  }
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event): void {
+    this.updateSidebarVisibility();
+  }
+
+  updateSidebarVisibility(): void {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 768) this.isSidebarVisible = false;
+    else this.isSidebarVisible = true;
   }
 }
