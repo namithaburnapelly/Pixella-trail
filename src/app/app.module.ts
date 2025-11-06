@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { JWT_Module_Options } from './Utils/jwt.auth';
 import { ErrorHandlerService } from './Utils/error.handler';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { LoadingComponent } from './Components/Shared/loading/loading.component';
 import { LucideIconsModule } from './Utils/lucide-icons.module';
 import { RequiredFieldAlertDivComponent } from './Components/Shared/required-field-alert-div/required-field-alert-div.component';
@@ -24,6 +24,7 @@ import { ChatpanelComponent } from './Components/Dashboard/home/chatpanel/chatpa
 import { ChatbotIconComponent } from './Components/Shared/chatbot-icon/chatbot-icon.component';
 import { MessageService } from './Services/Messages/message.service';
 import { NgxSonnerToaster } from 'ngx-sonner';
+import { authInterceptor } from './Services/Authentication/auth.interceptor';
 // import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -57,7 +58,7 @@ import { NgxSonnerToaster } from 'ngx-sonner';
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     AuthService,
     MessageService,
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
   bootstrap: [AppComponent],
 })
