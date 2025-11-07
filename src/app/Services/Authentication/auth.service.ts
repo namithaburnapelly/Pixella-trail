@@ -38,12 +38,12 @@ export class AuthService {
       .post<UserDetails>(this.login_url, { identifier, password })
       .pipe(
         map((response) => {
-          console.log(response, 'response from post call');
+          // console.log(response, 'response from post call');
           const user: CurrentUser = {
             username: response.user.username,
             accessToken: response.token,
           };
-          console.log(user, 'user created');
+          // console.log(user, 'user created');
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
           return user;

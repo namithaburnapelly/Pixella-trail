@@ -30,7 +30,6 @@ export class MessageService {
     tap(() => console.log('fetching chats')),
     switchMap(() =>
       this.http.get<ChatHistory[]>(this.chats_url).pipe(
-        delay(2000),
         map((result) => ({ result, loading: false })),
         startWith({ result: null, loading: true }),
         catchError((error) => {

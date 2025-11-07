@@ -1,10 +1,4 @@
-import {
-  Component,
-  HostListener,
-  inject,
-  Injector,
-  OnInit,
-} from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { MessageService } from '../../../Services/Messages/message.service';
 
 @Component({
@@ -15,9 +9,7 @@ import { MessageService } from '../../../Services/Messages/message.service';
 })
 export class SidebarComponent implements OnInit {
   isSidebarVisible: boolean = false;
-  Array = Array;
   private chatService = inject(MessageService);
-  private injector = inject(Injector);
 
   chatTitles = this.chatService.chatTitles$;
 
