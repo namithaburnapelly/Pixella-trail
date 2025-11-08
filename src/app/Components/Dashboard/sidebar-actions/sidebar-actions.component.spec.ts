@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadingComponent } from './loading.component';
+import { SidebarActionsComponent } from './sidebar-actions.component';
 
-describe('LoadingComponent', () => {
-  let component: LoadingComponent;
-  let fixture: ComponentFixture<LoadingComponent>;
+describe('SidebarActionsComponent', () => {
+  let component: SidebarActionsComponent;
+  let fixture: ComponentFixture<SidebarActionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingComponent]
+      declarations: [SidebarActionsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LoadingComponent);
+    fixture = TestBed.createComponent(SidebarActionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

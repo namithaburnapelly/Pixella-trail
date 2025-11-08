@@ -5,8 +5,8 @@
 @theme {
   --font-brand-font: "Doto", sans-serif;
   --color-muted-foreground: hsl(0 0% 45.1%);
-  --color-cardOverlay: rgba(256, 256, 256, 0.4);
-  --color-cardOverlayHover: rgba(256, 256, 256, 0.3);
+  --color-cardOverlay: rgba(256, 256, 256, 0.3);
+  --color-cardOverlayHover: rgba(256, 256, 256, 0.2);
 
   @keyframes customBounce {
     0% {

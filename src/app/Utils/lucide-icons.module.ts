@@ -17,7 +17,10 @@ import {
   EyeClosed,
   Eye,
   ArrowUp,
-  ChevronLeft,
+  ChevronsLeft,
+  Settings,
+  CircleUserRound,
+  ChevronsUpDown,
 } from 'lucide-angular';
 
 @NgModule({
@@ -40,7 +43,10 @@ import {
       EyeClosed,
       Eye,
       ArrowUp,
-      ChevronLeft,
+      ChevronsLeft,
+      Settings,
+      CircleUserRound,
+      ChevronsUpDown,
     }),
   ],
   exports: [LucideAngularModule],

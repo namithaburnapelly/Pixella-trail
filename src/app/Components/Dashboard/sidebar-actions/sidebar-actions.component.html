@@ -1,0 +1,92 @@
+<div class="flex flex-col w-full shrink-0">
+  <div
+    class="flex w-full justify-between items-center pl-1.5 select-none cursor-pointer"
+    (click)="profile()"
+  >
+    <div class="flex gap-x-1">
+      <div class="flex items-center">
+        <lucide-icon
+          name="circle-user-round"
+          title="User"
+          class="text-blue-900"
+        ></lucide-icon>
+      </div>
+      <p class="font-semibold text-lg ml-1 text-blue-950">{{ username }}</p>
+      <div class="flex items-center">
+        <lucide-icon
+          name="chevrons-up-down"
+          title="User"
+          class="text-blue-900"
+          size="16px"
+        ></lucide-icon>
+      </div>
+    </div>
+
+    <button
+      class="group-hover/item:flex cursor-pointer hidden items-center w-fit p-1 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
+      (click)="toggleSidebar(); $event.stopPropagation()"
+    >
+      <lucide-icon
+        name="chevrons-left"
+        title="Close sidebar"
+        class="text-blue-950"
+        size="20px"
+      ></lucide-icon>
+    </button>
+  </div>
+  <div class="shrink-0 pt-[18px] md:pt-4 text-base/snug font-[450]">
+    <!-- New chat -->
+    <button
+      class="group w-full flex items-center justify-between gap-0.5 cursor-pointer px-2.5 py-1 rounded hover:bg-cardOverlayHover hover:drop-shadow-lg"
+    >
+      <div class="flex items-center gap-2.5 max-w-[90%]">
+        <lucide-icon
+          name="square-pen"
+          title="New chat"
+          class="text-blue-900"
+          size="18px"
+        ></lucide-icon>
+        <p class="truncate">New chat</p>
+      </div>
+      <div class="hidden group-hover:block transition-all ease-in duration-100">
+        <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + Shift + O</p>
+      </div>
+    </button>
+
+    <!-- serach chats -->
+    <button
+      class="group w-full flex items-center justify-between gap-0.5 cursor-pointer px-2.5 py-1 rounded hover:bg-cardOverlayHover hover:drop-shadow-lg"
+    >
+      <div class="flex items-center gap-2.5 max-w-[90%]">
+        <lucide-icon
+          name="search"
+          title="Search chats"
+          class="text-blue-900"
+          size="18px"
+        ></lucide-icon>
+        <p class="truncate">Search chats</p>
+      </div>
+      <div class="hidden group-hover:block transition-all ease-in duration-100">
+        <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + K</p>
+      </div>
+    </button>
+
+    <!-- Settings -->
+    <button
+      class="group w-full flex items-center justify-between gap-0.5 cursor-pointer px-2.5 py-1 rounded hover:bg-cardOverlayHover hover:drop-shadow-lg"
+    >
+      <div class="flex items-center gap-2.5 max-w-[90%]">
+        <lucide-icon
+          name="Settings"
+          title="Settings"
+          class="text-blue-900"
+          size="18px"
+        ></lucide-icon>
+        <p class="truncate">Settings</p>
+      </div>
+      <div class="hidden group-hover:block transition-all ease-in duration-100">
+        <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + K</p>
+      </div>
+    </button>
+  </div>
+</div>

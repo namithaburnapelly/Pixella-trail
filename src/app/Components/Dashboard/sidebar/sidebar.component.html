@@ -1,80 +1,18 @@
-<!-- Shared template for header -->
-<ng-template #sidebarHeader>
-  <div class="flex flex-col w-full shrink-0">
-    <div class="flex w-full justify-between px-3">
-      <app-brand-name
-        *ngIf="isSidebarVisible"
-        class="flex items-center text-blue-900"
-      ></app-brand-name>
-
-      <button
-        class="group cursor-pointer flex items-center w-fit py-0.5 px-2 md:p-1 rounded-full transition-colors ease-in duration-150 hover:bg-purple-300"
-        (click)="toggleSidebar()"
-      >
-        <lucide-icon
-          name="chevron-left"
-          title="Sidebar"
-          class="text-blue-900 opacity-80 group-hover:opacity-90"
-        ></lucide-icon>
-      </button>
-    </div>
-    <div class="shrink-0 pt-[18px] md:pt-6">
-      <!-- New chat -->
-      <button
-        class="group w-full flex items-center justify-between gap-0.5 cursor-pointer px-2.5 py-1.5 rounded hover:bg-cardOverlayHover hover:drop-shadow-lg"
-      >
-        <div class="flex items-center gap-1.5 max-w-[90%]">
-          <lucide-icon
-            name="square-pen"
-            title="New chat"
-            class="text-blue-900"
-            size="18px"
-          ></lucide-icon>
-          <p class="truncate">New chat</p>
-        </div>
-        <div
-          class="hidden group-hover:block transition-all ease-in duration-100"
-        >
-          <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + Shift + O</p>
-        </div>
-      </button>
-      <!-- serach chats -->
-
-      <button
-        class="group w-full flex items-center justify-between gap-0.5 cursor-pointer px-2.5 py-1.5 rounded hover:bg-cardOverlayHover hover:drop-shadow-lg"
-      >
-        <div class="flex items-center gap-1.5 max-w-[90%]">
-          <lucide-icon
-            name="search"
-            title="Search chats"
-            class="text-blue-900"
-            size="18px"
-          ></lucide-icon>
-          <p class="truncate">Search chats</p>
-        </div>
-        <div
-          class="hidden group-hover:block transition-all ease-in duration-100"
-        >
-          <p class="text-sm opacity-50 whitespace-nowrap">Ctrl + K</p>
-        </div>
-      </button>
-    </div>
-  </div>
-</ng-template>
-
 <!-- shared template for content -->
 <ng-template #sidebarContent>
-  <div class="w-full h-full pt-2 md:pt-4 flex flex-col grow gap-y-5">
+  <div class="w-full h-full pt-2 md:pt-2 flex flex-col grow gap-y-5">
     <div class="flex flex-col grow min-h-0">
-      <p
-        class="pb-1.5 px-[27px] text-blue-900 font-medium select-none opacity-75"
-      >
+      @if(chatTitles | async; as titles ){ @if(titles.result?.length !== 0){
+
+      <p class="pb-1.5 px-4.5 text-blue-900 font-medium select-none opacity-75">
         Chats
       </p>
 
-      <div class="flex flex-col grow px-4.5 pr-2 min-h-0">
-        @if(chatTitles | async; as titles ){ @if (titles.loading) {
-        <div class="flex flex-col gap-y-4 animate-pulse w-[75%] h-full pt-4">
+      <div class="flex flex-col grow px-2.5 pr-2 min-h-0">
+        @if (titles.loading) {
+        <div
+          class="flex flex-col gap-y-4 animate-pulse w-[75%] h-full pt-2 px-[9px]"
+        >
           <div
             class="bg-cardOverlay h-3 rounded-full w-full backdrop-blur-lg"
           ></div>
@@ -95,8 +33,8 @@
         <div class="scrollbar overflow-y-auto grow pr-2 -mr-2">
           @for(chat of titles.result; track chat.id){
           <div
-            class="group flex items-center justify-between w-full px-[9px] hover:bg-cardOverlayHover rounded hover:drop-shadow-lg"
-            routerLinkActive="bg-cardOverlay drop-shadow-lg"
+            class="group flex items-center justify-between w-full px-[9px] text-base/snug font-[450] hover:bg-cardOverlayHover rounded hover:drop-shadow-lg"
+            routerLinkActive="bg-cardOverlay drop-shadow-lg font-medium text-blue-900"
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <a
@@ -112,25 +50,29 @@
           </div>
           }
         </div>
-        } }
+        }
       </div>
+      }}
     </div>
   </div>
 </ng-template>
 
 <!-- desktop view -->
 <aside
-  class="hidden md:flex flex-col h-full py-3 relative bg-linear-to-b from-purple-200 to-indigo-200 ease-in-out duration-500"
+  class="hidden group/item md:flex flex-col h-full py-3 relative bg-linear-to-b from-purple-200 to-indigo-200 ease-in-out duration-500"
   [style.width.px]="sidebarWidth"
   [ngClass]="{
     'transition-all': !isResizing,
     'transition-none': isResizing
   }"
 >
-  <div class="w-full px-4">
+  <div class="w-full px-2">
     <div class="w-full py-2 flex justify-center items-center">
       @if (isSidebarVisible) {
-      <ng-container *ngTemplateOutlet="sidebarHeader"></ng-container>
+      <!-- sidebar header -->
+      <div class="w-full">
+        <app-sidebar-actions (toggle)="toggleSidebar()"></app-sidebar-actions>
+      </div>
       } @else {
       <button
         class="cursor-pointer flex justify-center w-fit p-[5px] rounded transition-colors ease-in duration-150 hover:bg-purple-300"
@@ -172,14 +114,15 @@
   </button>
 </div>
 <aside
-  class="md:hidden fixed top-0 left-0 w-full h-dvh py-3 flex flex-col min-h-0 bg-linear-to-b from-purple-200 to-indigo-200 transition-transform duration-400"
+  class="md:hidden group/item fixed top-0 left-0 w-full h-dvh py-3 flex flex-col min-h-0 bg-linear-to-b from-purple-200 to-indigo-200 transition-transform duration-400"
   [ngClass]="{
     'translate-x-0': isSidebarVisible,
     '-translate-x-full': !isSidebarVisible
   }"
 >
-  <div class="w-full px-4 py-[5px] shrink-0">
-    <ng-container *ngTemplateOutlet="sidebarHeader"></ng-container>
+  <!-- sidebar header -->
+  <div class="w-full px-2 py-[5px] shrink-0">
+    <app-sidebar-actions (toggle)="toggleSidebar()"></app-sidebar-actions>
   </div>
   <!-- sidebar content -->
   <div class="flex-1 min-h-0 overflow-y-auto py-2">

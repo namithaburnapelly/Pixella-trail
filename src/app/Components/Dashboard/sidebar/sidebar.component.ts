@@ -17,8 +17,8 @@ import { filter } from 'rxjs';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   isSidebarVisible: boolean = true;
-  sidebarWidth: number = 320;
-  MIN_WIDTH: number = 300;
+  sidebarWidth: number = 280;
+  MIN_WIDTH: number = 280;
   MAX_WIDTH: number = 640;
   isResizing: Boolean = false;
 
@@ -80,7 +80,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
-    this.sidebarWidth = this.isSidebarVisible ? 320 : 80;
+    this.sidebarWidth = this.isSidebarVisible ? 280 : 80;
   }
 
   ngOnDestroy(): void {
