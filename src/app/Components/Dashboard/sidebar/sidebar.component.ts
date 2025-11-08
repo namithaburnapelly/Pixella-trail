@@ -1,5 +1,13 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MessageService } from '../../../Services/Messages/message.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,28 +15,76 @@ import { MessageService } from '../../../Services/Messages/message.service';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent implements OnInit {
-  isSidebarVisible: boolean = false;
+export class SidebarComponent implements OnInit, OnDestroy {
+  isSidebarVisible: boolean = true;
+  sidebarWidth: number = 320;
+  MIN_WIDTH: number = 300;
+  MAX_WIDTH: number = 640;
+  isResizing: Boolean = false;
+
   private chatService = inject(MessageService);
+  private router = inject(Router);
 
   chatTitles = this.chatService.chatTitles$;
 
-  ngOnInit(): void {
-    this.updateSidebarVisibility();
-    this.chatService.refreshChatTitles();
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    const windowWidth = (event.target as Window).innerWidth;
+    if (windowWidth < 768) {
+      this.isSidebarVisible = false;
+    } else {
+      this.isSidebarVisible = true;
+    }
   }
+
+  startResize(event: MouseEvent) {
+    this.isResizing = true;
+    event.preventDefault();
+  }
+  ngOnInit(): void {
+    this.chatService.refreshChatTitles();
+
+    // drag sidebar
+    document.addEventListener('mousemove', this.resizeHandler);
+    document.addEventListener('mouseup', this.stopResizeHandler);
+
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        if (window.innerWidth < 768) {
+          this.isSidebarVisible = false;
+        } else {
+          this.isSidebarVisible = true;
+        }
+      });
+  }
+
+  resizeHandler = (event: MouseEvent) => {
+    if (!this.isResizing) return;
+
+    const newWidth = event.clientX;
+    const windowWidth = window.innerWidth;
+
+    if (
+      newWidth > this.MIN_WIDTH &&
+      newWidth < this.MAX_WIDTH &&
+      newWidth < windowWidth - 50 // Ensure sidebar doesn't exceed screen width
+    ) {
+      this.sidebarWidth = newWidth;
+    }
+  };
+
+  stopResizeHandler = () => {
+    this.isResizing = false;
+  };
 
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
-  }
-  @HostListener('window:resize', ['$event'])
-  onWindowResize(event: Event): void {
-    this.updateSidebarVisibility();
+    this.sidebarWidth = this.isSidebarVisible ? 320 : 80;
   }
 
-  updateSidebarVisibility(): void {
-    const screenWidth = window.innerWidth;
-    if (screenWidth < 768) this.isSidebarVisible = false;
-    else this.isSidebarVisible = true;
+  ngOnDestroy(): void {
+    document.removeEventListener('mousemove', this.resizeHandler);
+    document.removeEventListener('mouseup', this.stopResizeHandler);
   }
 }

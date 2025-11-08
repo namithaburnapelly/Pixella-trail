@@ -6,13 +6,13 @@ import { toast } from 'ngx-sonner';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const token = authService.getAccessToken();
 
-  const newReqWithHeaders = req.clone({
-    headers: req.headers.append(
-      'Authorization',
-      `Bearer ${authService.getAccessToken()}`
-    ),
-  });
+  const newReqWithHeaders = token
+    ? req.clone({
+        headers: req.headers.append('Authorization', `Bearer ${token}`),
+      })
+    : req;
 
   return next(newReqWithHeaders).pipe(
     catchError((error) => {
