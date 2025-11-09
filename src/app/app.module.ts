@@ -26,6 +26,7 @@ import { MessageService } from './Services/Messages/message.service';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { authInterceptor } from './Services/Authentication/auth.interceptor';
 import { SidebarActionsComponent } from './Components/Dashboard/sidebar-actions/sidebar-actions.component';
+import { ChatsService } from './Services/Messages/chats.service';
 // import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -60,6 +61,7 @@ import { SidebarActionsComponent } from './Components/Dashboard/sidebar-actions/
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     AuthService,
     MessageService,
+    ChatsService,
     provideHttpClient(withInterceptors([authInterceptor])),
   ],
   bootstrap: [AppComponent],

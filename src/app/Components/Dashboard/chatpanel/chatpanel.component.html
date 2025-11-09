@@ -1,1 +1,130 @@
-<p>chatpanel works!</p>
+<!-- <ng-container *ngIf="messages$ | async as messages"></ng-container> -->
+<div class="flex flex-col w-full h-full min-h-0">
+  <div class="flex-1 min-h-0 overflow-y-auto px-4 pt-4 scrollbar">
+    @if(messages$ | async; as messages ){ @if(messages.result?.length !== 0){
+    <div class="mx-auto w-full md:max-w-[750px] flex flex-col pb-64">
+      @if(messages.loading){
+      <div>
+        <!-- Skeleon -->
+        messages loading
+      </div>
+      } @if(messages.result){
+      <div class="px-4 flex flex-col gap-y-0.5">
+        @for(message of messages.result; track message.id){
+        <article class="w-full">
+          <div
+            class="flex w-full"
+            [ngClass]="{
+              'justify-end': message.role === 'user',
+              'justify-start': message.role === 'model'
+            }"
+          >
+            <div
+              class="group/userOptions flex flex-col gap-y-1 w-full"
+              [ngClass]="{
+                'items-end': message.role === 'user',
+                'items-start': message.role === 'model'
+              }"
+            >
+              <div
+                class=""
+                [ngClass]="{
+                  'px-4 py-1.5 rounded-[18px] bg-indigo-100':
+                    message.role === 'user',
+                  'w-full': message.role === 'model'
+                }"
+              >
+                <p>{{ message.content }}</p>
+              </div>
+
+              <!-- Options -->
+              @if(message.role === 'user'){
+              <div
+                class="invisible opacity-0 group-hover/userOptions:visible group-hover/userOptions:opacity-100 flex justify-center items-center transition-all ease-in-out duration-300"
+              >
+                <!-- Copy message -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="copy"
+                    title="Copy"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+
+                <!-- Edit message -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="pencil"
+                    title="Edit message"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+              </div>
+              } @if(message.role === 'model'){
+              <div class="mb-10 w-full flex items-center">
+                <!-- Copy response -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="copy"
+                    title="Copy"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+
+                <!-- Like response -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="thumbs-up"
+                    title="Good response"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+
+                <!-- Dislike response -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="thumbs-down"
+                    title="Bad response"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+
+                <!-- Try again -->
+                <button
+                  class="group/icon p-2 hover:bg-indigo-100 cursor-pointer rounded-lg"
+                >
+                  <lucide-icon
+                    name="refresh-cw"
+                    title="Try again"
+                    class="text-blue-900 opacity-90 group-hover/icon:opacity-100"
+                    size="16px"
+                  ></lucide-icon>
+                </button>
+              </div>
+              }
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+      }
+    </div>
+
+    }}
+  </div>
+</div>

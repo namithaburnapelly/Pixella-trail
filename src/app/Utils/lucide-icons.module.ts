@@ -21,6 +21,11 @@ import {
   Settings,
   CircleUserRound,
   ChevronsUpDown,
+  Copy,
+  Pencil,
+  ThumbsDown,
+  ThumbsUp,
+  RefreshCw,
 } from 'lucide-angular';
 
 @NgModule({
@@ -47,6 +52,11 @@ import {
       Settings,
       CircleUserRound,
       ChevronsUpDown,
+      Copy,
+      Pencil,
+      ThumbsDown,
+      ThumbsUp,
+      RefreshCw,
     }),
   ],
   exports: [LucideAngularModule],

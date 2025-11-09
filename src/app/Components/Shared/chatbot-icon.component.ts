@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
   selector: 'app-chatbot-icon',
   standalone: false,
   template: `
-    <div class="h-full w-full">
+    <div class="h-14 w-14 flex items-center justify-center">
       <div
-        class="animate-pulse  bg-gray-300 rounded flex justify-center items-center select-none"
+        class="animate-pulse ml-2 px-1 bg-gray-300 rounded flex justify-center items-center select-none"
         *ngIf="!imageLoaded"
       >
         <!-- skeleton -->
         <svg
-          class="w-6 h-6 stroke-gray-400"
+          class="w-8 h-10 stroke-gray-400"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

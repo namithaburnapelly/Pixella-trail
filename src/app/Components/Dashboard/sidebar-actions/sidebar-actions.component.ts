@@ -8,12 +8,16 @@ import { AuthService } from '../../../Services/Authentication/auth.service';
   styleUrl: './sidebar-actions.component.css',
 })
 export class SidebarActionsComponent implements OnInit {
-  username!: string;
-  private authService = inject(AuthService);
   @Output() toggle = new EventEmitter<void>();
+
+  username!: string;
+  userInitial!: string;
+
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.username = this.authService.getUsername();
+    this.userInitial = this.username.charAt(0);
   }
 
   toggleSidebar() {

@@ -43,6 +43,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.chatService.refreshChatTitles();
+    this.updateSidebarVisibility();
 
     // drag sidebar
     document.addEventListener('mousemove', this.resizeHandler);
@@ -81,6 +82,17 @@ export class SidebarComponent implements OnInit, OnDestroy {
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
     this.sidebarWidth = this.isSidebarVisible ? 280 : 80;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event): void {
+    this.updateSidebarVisibility();
+  }
+
+  updateSidebarVisibility(): void {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 768) this.isSidebarVisible = false;
+    else this.isSidebarVisible = true;
   }
 
   ngOnDestroy(): void {
