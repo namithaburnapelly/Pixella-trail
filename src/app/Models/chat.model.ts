@@ -1,4 +1,4 @@
-export interface ChatHistory {
+export interface ChatMetaData {
   id: string;
   title: string;
   userId: string;

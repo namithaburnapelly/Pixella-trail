@@ -6,9 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  isSidebarVisible: boolean = false;
-  onSidebarChange(value: boolean) {
-    this.isSidebarVisible = value;
-  }
-}
+export class HomeComponent {}

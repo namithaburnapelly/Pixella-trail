@@ -1,0 +1,26 @@
+<form
+  [formGroup]="userForm"
+  (ngSubmit)="sendMessage()"
+  class="w-full border border-indigo-200 rounded-2xl p-2 bg-white flex items-end gap-x-2 shadow-md shadow-indigo-100"
+>
+  <textarea
+    #autoResizeTextarea
+    formControlName="prompt"
+    [ngStyle]="{ overflowY: isOverFlowing ? 'auto' : 'hidden' }"
+    (input)="autoResize(autoResizeTextarea)"
+    (keydown)="handleKeyDown($event)"
+    placeholder="Ask anything"
+    class="p-1 resize-none overflow-auto max-h-40 outline-none w-full items-center"
+    rows="2"
+  ></textarea>
+  <button
+    type="submit"
+    [disabled]="!userForm.get('propmt')?.value?.trim()"
+    class="group border border-indigo-200 w-[34px] h-8 rounded-full flex items-center justify-center hover:bg-linear-to-br from-purple-200 to-indigo-200 disabled:border-opacity-50 disabled:hover:bg-none transition"
+  >
+    <lucide-icon
+      name="arrow-up"
+      class="w-5 h-5 text-indigo-900 group-disabled:text-indigo-200"
+    ></lucide-icon>
+  </button>
+</form>

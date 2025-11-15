@@ -4,33 +4,49 @@ import { environment } from '../../../Environment/environment.prod';
 import {
   BehaviorSubject,
   catchError,
+  delay,
+  distinctUntilChanged,
+  filter,
   finalize,
   map,
+  Observable,
   of,
   shareReplay,
   startWith,
+  Subject,
   switchMap,
+  take,
   tap,
+  withLatestFrom,
 } from 'rxjs';
 import { toast } from 'ngx-sonner';
-import { ChatHistory } from '../../Models/chat.model';
-import { Message } from '../../Models/message.model';
+import { ChatMetaData } from '../../Models/chat.model';
+import { Message, MessageInChatResponse } from '../../Models/message.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
   private chats_url = environment.chatsUrl;
+  private messages_url = environment.messageUrl;
+
   private http = inject(HttpClient);
+
   private chats = new Map<string, Message[]>();
+  private tempPromptForNewChat: Message | null = null;
 
   private selectedChatId = new BehaviorSubject<string | null>(null);
   private refreshChats = new BehaviorSubject<void>(undefined);
 
+  private modelThinking = new BehaviorSubject<boolean>(false);
+  modelThinking$ = this.modelThinking.asObservable();
+
+  constructor() {}
+
   chatTitles$ = this.refreshChats.pipe(
-    tap(() => console.log('fetching chats')),
+    // tap(() => console.log('fetching chats')),
     switchMap(() =>
-      this.http.get<ChatHistory[]>(this.chats_url).pipe(
+      this.http.get<ChatMetaData[]>(this.chats_url).pipe(
         map((result) => ({ result, loading: false })),
         startWith({ result: null, loading: true }),
         catchError((error) => {
@@ -43,8 +59,8 @@ export class MessageService {
             loading: false,
             error: true,
           });
-        }),
-        finalize(() => console.log('fetching completed'))
+        })
+        // finalize(() => console.log('fetching completed'))
       )
     ),
     shareReplay(1)
@@ -60,7 +76,7 @@ export class MessageService {
       if (this.chats.has(chatId)) {
         console.log(this.chats.get(chatId), 'cached messages');
         return of({
-          result: this.chats.get(chatId),
+          result: this.chats.get(chatId) ?? [],
           loading: false,
         });
       }
@@ -76,10 +92,13 @@ export class MessageService {
         startWith({ result: null, loading: true }),
         catchError((error) => {
           console.error(error);
+          toast.error('Unable to load Messages, Try refreshing.', {
+            duration: Number.POSITIVE_INFINITY,
+          });
           return of({
             result: null,
             loading: false,
-            error: true,
+            error: error,
           });
         }),
         finalize(() => console.log('Fetch messages completed'))
@@ -88,11 +107,94 @@ export class MessageService {
     shareReplay(1)
   );
 
+  private addTempUserMessage(chatId: string | null, prompt: string): Message {
+    const TempUserMessage: Message = {
+      id: 'temp-' + Date.now(),
+      role: 'user',
+      content: [prompt],
+      chatId: chatId ?? '',
+    };
+    if (chatId) {
+      const exisitng = this.chats.get(chatId) ?? [];
+      const updated = [...exisitng, TempUserMessage];
+
+      this.chats.set(chatId, updated);
+      this.selectedChatId.next(chatId);
+    }
+
+    return TempUserMessage;
+  }
+
   refreshChatTitles() {
     this.refreshChats.next();
   }
 
-  setCurrentChatId(chatId: string) {
+  getCurrentChatIdMessages(chatId: string) {
     this.selectedChatId.next(chatId);
+  }
+
+  clearSelectedChat() {
+    this.selectedChatId.next(null);
+  }
+
+  sendMessage(
+    userPrompt: string
+  ): Observable<MessageInChatResponse | { result: null; error: boolean }> {
+    return this.selectedChatId.pipe(
+      take(1),
+      switchMap((chatId) => {
+        if (!chatId) {
+          return this.http
+            .post<MessageInChatResponse>(this.messages_url, { userPrompt })
+            .pipe(
+              tap((response) => {
+                if (response.chat) {
+                  const newChatId = response.chat.id;
+                  this.chats.set(newChatId, response.messages);
+                  this.selectedChatId.next(newChatId);
+                }
+                this.refreshChatTitles();
+                console.log(response, 'from new chat');
+              })
+            );
+        }
+        // chatId exists -> append user message
+        const temp = this.addTempUserMessage(chatId, userPrompt);
+
+        // loading state
+        this.modelThinking.next(true);
+
+        return this.http
+          .post<MessageInChatResponse>(`${this.messages_url}/${chatId}`, {
+            userPrompt,
+          })
+          .pipe(
+            tap((serverResponse) => {
+              let cached = (this.chats.get(chatId) ?? []).filter(
+                (m) => m.id !== temp.id
+              );
+
+              // append real messages from server
+              const updatedMessages = [...cached, ...serverResponse.messages];
+              this.chats.set(chatId, updatedMessages);
+
+              // trigger UI update
+              this.selectedChatId.next(chatId);
+              console.log(this.chats);
+            }),
+            catchError((error) => {
+              console.error(error);
+              toast.error('Internal server error, Try again.', {
+                duration: Number.POSITIVE_INFINITY,
+              });
+              return of({
+                result: null,
+                error: true,
+              });
+            }),
+            finalize(() => this.modelThinking.next(false))
+          );
+      })
+    );
   }
 }

@@ -26,7 +26,8 @@ import { MessageService } from './Services/Messages/message.service';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { authInterceptor } from './Services/Authentication/auth.interceptor';
 import { SidebarActionsComponent } from './Components/Dashboard/sidebar-actions/sidebar-actions.component';
-import { ChatsService } from './Services/Messages/chats.service';
+import { PacmanLoadingComponent } from './Components/Shared/pacman-loading.component';
+import { UserPromptFormComponent } from './Components/Dashboard/user-prompt-form/user-prompt-form.component';
 // import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -44,6 +45,8 @@ import { ChatsService } from './Services/Messages/chats.service';
     ChatpanelComponent,
     ChatbotIconComponent,
     SidebarActionsComponent,
+    PacmanLoadingComponent,
+    UserPromptFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +64,6 @@ import { ChatsService } from './Services/Messages/chats.service';
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     AuthService,
     MessageService,
-    ChatsService,
     provideHttpClient(withInterceptors([authInterceptor])),
   ],
   bootstrap: [AppComponent],

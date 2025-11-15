@@ -14,12 +14,17 @@ export class ChatpanelComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private messageService = inject(MessageService);
   messages$ = this.messageService.messages$;
+  modelThinking = this.messageService.modelThinking$;
+
+  constructor() {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.currentChatId = params.get('chatId');
       if (this.currentChatId) {
-        this.messageService.setCurrentChatId(this.currentChatId);
+        this.messageService.getCurrentChatIdMessages(this.currentChatId);
+      } else {
+        this.messageService.clearSelectedChat();
       }
     });
   }

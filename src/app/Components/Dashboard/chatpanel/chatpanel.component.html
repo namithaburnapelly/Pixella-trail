@@ -1,15 +1,43 @@
-<!-- <ng-container *ngIf="messages$ | async as messages"></ng-container> -->
 <div class="flex flex-col w-full h-full min-h-0">
   <div class="flex-1 min-h-0 overflow-y-auto px-4 pt-4 scrollbar">
     @if(messages$ | async; as messages ){ @if(messages.result?.length !== 0){
     <div class="mx-auto w-full md:max-w-[750px] flex flex-col pb-64">
       @if(messages.loading){
-      <div>
-        <!-- Skeleon -->
-        messages loading
+      <!-- Skeleon -->
+      <div class="flex flex-col gap-y-10 mt-5 mx-5 md:mt-10 md:mx-4">
+        <div
+          role="status"
+          class="animate-pulse flex justify-end gap-x-3 items-center"
+        >
+          <div class="flex flex-col items-end gap-y-2">
+            <div class="w-32 md:w-64 h-3 bg-gray-200 rounded-full"></div>
+            <div class="w-18 md:w-32 h-2 bg-gray-200 rounded-full"></div>
+            <div class="w-24 md:w-48 h-2 bg-gray-200 rounded-full"></div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+        </div>
+        <div role="status" class="animate-pulse flex gap-x-3 items-center">
+          <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+          <div class="flex flex-col gap-y-2">
+            <div class="w-24 md:w-48 h-3 bg-gray-200 rounded-full"></div>
+            <div class="w-32 md:w-64 h-2 bg-gray-200 rounded-full"></div>
+            <div class="w-18 mdw-32 h-2 bg-gray-200 rounded-full"></div>
+          </div>
+        </div>
+        <div
+          role="status"
+          class="animate-pulse flex justify-end gap-x-3 items-center"
+        >
+          <div class="flex flex-col items-end gap-y-2">
+            <div class="w-18 md:w-32 h-3 bg-gray-200 rounded-full"></div>
+            <div class="w-32 md:w-48 h-2 bg-gray-200 rounded-full"></div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+        </div>
       </div>
+
       } @if(messages.result){
-      <div class="px-4 flex flex-col gap-y-0.5">
+      <div class="px-5 flex flex-col gap-y-0.5">
         @for(message of messages.result; track message.id){
         <article class="w-full">
           <div
@@ -29,12 +57,14 @@
               <div
                 class=""
                 [ngClass]="{
-                  'px-4 py-1.5 rounded-[18px] bg-indigo-100':
+                  'px-4 py-1.5 rounded-[18px] bg-indigo-100 max-w-[70%] ':
                     message.role === 'user',
                   'w-full': message.role === 'model'
                 }"
               >
-                <p>{{ message.content }}</p>
+                <p class="whitespace-pre-wrap wrap-break-word">
+                  {{ message.content }}
+                </p>
               </div>
 
               <!-- Options -->
@@ -122,9 +152,23 @@
         </article>
         }
       </div>
-      }
+      @if(modelThinking | async){
+      <div>
+        <app-pacman-loading></app-pacman-loading>
+      </div>
+      } }
     </div>
-
     }}
+    <div class="mx-auto w-full md:max-w-[750px] sticky bottom-0 px-5 bg-white">
+      <app-user-prompt-form
+        [currentChatId]="currentChatId"
+      ></app-user-prompt-form>
+
+      <div class="flex justify-center items-center p-2">
+        <p class="text-xs text-muted-foreground">
+          Pixella can make mistakes. Check important information.
+        </p>
+      </div>
+    </div>
   </div>
 </div>

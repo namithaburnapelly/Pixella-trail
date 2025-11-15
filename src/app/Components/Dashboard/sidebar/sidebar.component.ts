@@ -27,20 +27,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   chatTitles = this.chatService.chatTitles$;
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    const windowWidth = (event.target as Window).innerWidth;
-    if (windowWidth < 768) {
-      this.isSidebarVisible = false;
-    } else {
-      this.isSidebarVisible = true;
-    }
-  }
-
-  startResize(event: MouseEvent) {
-    this.isResizing = true;
-    event.preventDefault();
-  }
   ngOnInit(): void {
     this.chatService.refreshChatTitles();
     this.updateSidebarVisibility();
@@ -58,6 +44,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.isSidebarVisible = true;
         }
       });
+  }
+
+  startResize(event: MouseEvent) {
+    this.isResizing = true;
+    event.preventDefault();
   }
 
   resizeHandler = (event: MouseEvent) => {
