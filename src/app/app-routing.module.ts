@@ -5,6 +5,7 @@ import { SignupComponent } from './Components/Authentication/signup/signup.compo
 import { loginGuard } from './Services/Authentication/login.guard';
 import { HomeComponent } from './Components/Dashboard/home/home.component';
 import { authGuard } from './Services/Authentication/auth.guard';
+import { ChatpanelComponent } from './Components/Dashboard/chatpanel/chatpanel.component';
 
 // canActivate is a route gaurd executed to check if router should navigate to the route.
 const routes: Routes = [
@@ -12,9 +13,10 @@ const routes: Routes = [
   {
     path: 'chat',
     canActivate: [authGuard],
+    component: HomeComponent,
     children: [
-      { path: 'new', component: HomeComponent },
-      { path: ':chatId', component: HomeComponent },
+      { path: 'new', component: ChatpanelComponent },
+      { path: ':chatId', component: ChatpanelComponent },
     ],
   },
 
